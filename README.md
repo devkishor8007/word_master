@@ -1,10 +1,8 @@
 # word_master
 made with go | gorilla/mux
-```
-"WordMaster" is a content management system (CMS) designed specifically for bloggers and content creators.
+- "WordMaster" is a content management system (CMS) designed specifically for bloggers and content creators.
 It offers a user intuitive API that is supported by Golang, Mux, PostgreSQL and GORM ORM. This allows
 for handling, publishing and distribution of blog articles.
-```
 
 ## run locally
 ```
