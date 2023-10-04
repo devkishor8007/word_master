@@ -9,6 +9,7 @@ import (
 	"os"
     "github.com/gorilla/mux"
 	"github.com/devkishor8007/word_master/src/database"
+	"github.com/devkishor8007/word_master/src/routes"
 )
 
 func main() {
@@ -22,6 +23,8 @@ func main() {
 	port := os.Getenv("PORT")
 
 	router := mux.NewRouter()
+
+	routes.SetupRoutes(router)
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Hello, World!")
