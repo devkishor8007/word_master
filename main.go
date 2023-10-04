@@ -8,9 +8,12 @@ import (
 	"github.com/joho/godotenv"
 	"os"
     "github.com/gorilla/mux"
+	"github.com/devkishor8007/word_master/src/database"
 )
 
 func main() {
+	database.InitDB()
+
 	err := godotenv.Load()
 	if err != nil {
 	  log.Fatal("Error loading .env file")
