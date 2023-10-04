@@ -17,8 +17,10 @@ $ touch main.go
 ```
 
 ## language, tools & packages I am using
-- golang
-- gorilla/mux
-- pg along with gorm orm
-- dotenv
-- swagger
+|  language | package / library | database | orm
+|----------|----------|----------|----------|
+| golang | gorilla / mux | Postgres | Gorm
+| | dotenv | |
+| | bcrypt | |
+| | swagger | |
+
