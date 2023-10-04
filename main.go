@@ -26,12 +26,6 @@ func main() {
 
 	routes.SetupRoutes(router)
 
-	handler := func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "Hello, World!")
-	}
-	
-	router.HandleFunc("/", handler)
-
 	server := &http.Server{
 		Addr:    ":"+ port,
 		Handler: router,
