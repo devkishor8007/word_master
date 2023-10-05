@@ -45,6 +45,44 @@ func Register(writer http.ResponseWriter, request *http.Request) {
 	writer.Write(jsonResponse)
 }
 
+func Login(writer http.ResponseWriter, request *http.Request) {
+    writer.Header().Set("Content-Type", "application/json")
+
+	var requestBody struct {
+        Email    string `json:"email"`
+        Password string `json:"password"`
+    }
+	
+	var user models.User
+
+	decoder := json.NewDecoder(request.Body)
+	if err := decoder.Decode(&requestBody); err != nil {
+		http.Error(writer, "failed to decode JSON", http.StatusBadRequest)
+		return
+	}
+
+	if err := database.DB.Where("email = ?", requestBody.Email).First(&user).Error; err != nil {
+        http.Error(writer, "User not found", http.StatusNotFound)
+        return
+    }
+
+	storedHashedPassword := user.Password 
+	plainPassword := requestBody.Password
+
+	// compare the password using bcrypt
+	errPassword := bcrypt.CompareHashAndPassword([]byte(storedHashedPassword), []byte(plainPassword))
+    if errPassword != nil {
+        fmt.Println("Email and Password does not match")
+        return
+    }
+
+	responseMessage := map[string]string{"message": "user login successully"}
+	jsonResponse, _ := json.Marshal(responseMessage)
+	
+	writer.WriteHeader(http.StatusOK)
+	writer.Write(jsonResponse)
+}
+
 func Home(writer http.ResponseWriter, request *http.Request) {
     writer.Header().Set("Content-Type", "application/json")
 	
