@@ -7,7 +7,21 @@ import (
 	"encoding/json"
 	"golang.org/x/crypto/bcrypt"
 	"fmt"
+	"time"
+	"github.com/dgrijalva/jwt-go"
 )
+
+type JWTClaims struct {
+	UserID uint `json:"user_id"`
+	jwt.StandardClaims
+}
+
+var (
+    jwtSecret   = []byte("your-secret-key") // change the secret-key
+    tokenExpiry = 7 * 24 * time.Hour   // Token expiration after 7 days        
+)
+
+
 
 func Register(writer http.ResponseWriter, request *http.Request) {
     writer.Header().Set("Content-Type", "application/json")
@@ -76,11 +90,47 @@ func Login(writer http.ResponseWriter, request *http.Request) {
         return
     }
 
-	responseMessage := map[string]string{"message": "user login successully"}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, JWTClaims{
+		UserID: user.UserID,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(tokenExpiry).Unix(),
+			IssuedAt:  time.Now().Unix(),
+		},
+	})
+
+		// Sign the token with the secret key
+	tokenString, err := token.SignedString(jwtSecret)
+		if err != nil {
+			http.Error(writer, "Failed to generate token", http.StatusInternalServerError)
+			return
+		}
+
+	responseMessage := map[string]string{"access_token": tokenString}
 	jsonResponse, _ := json.Marshal(responseMessage)
 	
 	writer.WriteHeader(http.StatusOK)
 	writer.Write(jsonResponse)
+}
+
+func RequiredAuth(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		tokenString := request.Header.Get("Authorization")
+		if tokenString == "" {
+			http.Error(writer, "Token not found in the header", http.StatusUnauthorized)
+			return
+		}
+
+		token, err := jwt.ParseWithClaims(tokenString, &JWTClaims{}, func(token *jwt.Token) (interface{}, error) {
+			return jwtSecret, nil
+		})
+		if err != nil || !token.Valid {
+			http.Error(writer, "Invalid or expired token", http.StatusUnauthorized)
+			return
+		}
+
+		// Token is valid; proceed to the protected route
+		next.ServeHTTP(writer, request)
+	})
 }
 
 func Home(writer http.ResponseWriter, request *http.Request) {
