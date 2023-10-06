@@ -9,19 +9,9 @@ import (
 	"fmt"
 	"time"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/devkishor8007/word_master/src/config"
+	"github.com/devkishor8007/word_master/src/utilis"
 )
-
-type JWTClaims struct {
-	UserID uint `json:"user_id"`
-	jwt.StandardClaims
-}
-
-var (
-    jwtSecret   = []byte("your-secret-key") // change the secret-key
-    tokenExpiry = 7 * 24 * time.Hour   // Token expiration after 7 days        
-)
-
-
 
 func Register(writer http.ResponseWriter, request *http.Request) {
     writer.Header().Set("Content-Type", "application/json")
@@ -62,6 +52,9 @@ func Register(writer http.ResponseWriter, request *http.Request) {
 func Login(writer http.ResponseWriter, request *http.Request) {
     writer.Header().Set("Content-Type", "application/json")
 
+	secret := config.JWTSecret
+    expiry := config.TokenExpiry
+
 	var requestBody struct {
         Email    string `json:"email"`
         Password string `json:"password"`
@@ -90,16 +83,16 @@ func Login(writer http.ResponseWriter, request *http.Request) {
         return
     }
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, JWTClaims{
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, utilis.JWTClaims{
 		UserID: user.UserID,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(tokenExpiry).Unix(),
+			ExpiresAt: time.Now().Add(expiry).Unix(),
 			IssuedAt:  time.Now().Unix(),
 		},
 	})
 
-		// Sign the token with the secret key
-	tokenString, err := token.SignedString(jwtSecret)
+	// Sign the token with the secret key
+	tokenString, err := token.SignedString(secret)
 		if err != nil {
 			http.Error(writer, "Failed to generate token", http.StatusInternalServerError)
 			return
@@ -112,27 +105,6 @@ func Login(writer http.ResponseWriter, request *http.Request) {
 	writer.Write(jsonResponse)
 }
 
-func RequiredAuth(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
-		tokenString := request.Header.Get("Authorization")
-		if tokenString == "" {
-			http.Error(writer, "Token not found in the header", http.StatusUnauthorized)
-			return
-		}
-
-		token, err := jwt.ParseWithClaims(tokenString, &JWTClaims{}, func(token *jwt.Token) (interface{}, error) {
-			return jwtSecret, nil
-		})
-		if err != nil || !token.Valid {
-			http.Error(writer, "Invalid or expired token", http.StatusUnauthorized)
-			return
-		}
-
-		// Token is valid; proceed to the protected route
-		next.ServeHTTP(writer, request)
-	})
-}
-
 func Home(writer http.ResponseWriter, request *http.Request) {
     writer.Header().Set("Content-Type", "application/json")
 	
@@ -140,4 +112,3 @@ func Home(writer http.ResponseWriter, request *http.Request) {
 	response := []byte(`{"message": "hello"}`)
 	writer.Write(response)
 }
-
