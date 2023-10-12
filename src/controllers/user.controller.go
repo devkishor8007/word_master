@@ -4,14 +4,17 @@ import (
 	"net/http"
 	"encoding/json"
 	"github.com/devkishor8007/word_master/src/database"
+	"github.com/devkishor8007/word_master/src/middleware"
 )
 
 func ViewProfile(writer http.ResponseWriter, request *http.Request) {
     writer.Header().Set("Content-Type", "application/json")
 
-	var requestBody struct {
-		UserID   uint   `json:"user_id"`
-    }
+	claims, err := middleware.JwtParserClaimss(request)
+	    if err != nil {
+	        http.Error(writer, err.Error(), http.StatusUnauthorized)
+	        return
+	    }
 
 	type User struct {
 		UserID   uint   `json:"user_id"`
@@ -21,13 +24,7 @@ func ViewProfile(writer http.ResponseWriter, request *http.Request) {
 
 	var user User
 
-	decoder := json.NewDecoder(request.Body)
-	if err := decoder.Decode(&requestBody); err != nil {
-		http.Error(writer, "failed to decode JSON", http.StatusBadRequest)
-		return
-	}
-
-	if err := database.DB.Where("user_id = ?", requestBody.UserID).First(&user).Error; err != nil {
+	if err := database.DB.Where("user_id = ?", claims.UserID).First(&user).Error; err != nil {
         http.Error(writer, "User not found", http.StatusNotFound)
         return
     }

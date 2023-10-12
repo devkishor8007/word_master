@@ -2,15 +2,15 @@ package middleware
 
 import (
 	"net/http"
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/devkishor8007/word_master/src/config"
-	"github.com/devkishor8007/word_master/src/utilis"
+	"fmt"
 )
 
 func RequiredAuth(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		
-		secret := config.JWTSecret
+		secretKey := config.JWTSecret
 
 		tokenString := request.Header.Get("Authorization")
 		if tokenString == "" {
@@ -18,9 +18,10 @@ func RequiredAuth(next http.Handler) http.Handler {
 			return
 		}
 
-		token, err := jwt.ParseWithClaims(tokenString, &utilis.JWTClaims{}, func(token *jwt.Token) (interface{}, error) {
-			return secret, nil
+		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+			return secretKey, nil
 		})
+		
 		if err != nil || !token.Valid {
 			http.Error(writer, "Invalid or expired token", http.StatusUnauthorized)
 			return

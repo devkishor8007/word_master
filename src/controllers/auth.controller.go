@@ -8,7 +8,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"fmt"
 	"time"
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/devkishor8007/word_master/src/config"
 	"github.com/devkishor8007/word_master/src/utilis"
 )
@@ -84,10 +84,10 @@ func Login(writer http.ResponseWriter, request *http.Request) {
     }
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, utilis.JWTClaims{
-		UserID: user.UserID,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(expiry).Unix(),
-			IssuedAt:  time.Now().Unix(),
+		user.UserID,
+		jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(expiry)),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
 		},
 	})
 
