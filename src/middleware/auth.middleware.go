@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"github.com/devkishor8007/word_master/src/config"
 	"github.com/golang-jwt/jwt/v5"
 	"net/http"
