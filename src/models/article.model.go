@@ -1,14 +1,14 @@
 package models
 
 import (
-    "time"
+	"time"
 )
 
 type Article struct {
-    ArticleID       uint       `gorm:"primaryKey" json:"article_id"`
-    Title           string     `json:"title"`
-    Content         string     `json:"content"`
-    PublicationDate time.Time  `json:"publication_date"`
-    AuthorID        uint       `json:"author_id"`
-    CategoryID      uint       `json:"category_id"`
+	ArticleID       uint      `gorm:"primaryKey" json:"article_id"`
+	Title           string    `json:"title"`
+	Content         string    `json:"content"`
+	PublicationDate time.Time `json:"publication_date"`
+	AuthorID        uint      `json:"author_id"`
+	CategoryID      uint      `json:"category_id"`
 }
