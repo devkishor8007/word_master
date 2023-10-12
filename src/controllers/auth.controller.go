@@ -1,21 +1,21 @@
 package controllers
 
 import (
+	"encoding/json"
+	"fmt"
+	"github.com/devkishor8007/word_master/src/config"
 	"github.com/devkishor8007/word_master/src/database"
 	"github.com/devkishor8007/word_master/src/models"
-	"net/http"
-	"encoding/json"
-	"golang.org/x/crypto/bcrypt"
-	"fmt"
-	"time"
-	"github.com/golang-jwt/jwt/v5"
-	"github.com/devkishor8007/word_master/src/config"
 	"github.com/devkishor8007/word_master/src/utilis"
+	"github.com/golang-jwt/jwt/v5"
+	"golang.org/x/crypto/bcrypt"
+	"net/http"
+	"time"
 )
 
 func Register(writer http.ResponseWriter, request *http.Request) {
-    writer.Header().Set("Content-Type", "application/json")
-	
+	writer.Header().Set("Content-Type", "application/json")
+
 	// create a new user instance
 	var user models.User
 
@@ -26,7 +26,7 @@ func Register(writer http.ResponseWriter, request *http.Request) {
 	}
 
 	// extract the password from the user struct
-	password := user.Password 
+	password := user.Password
 
 	// hash the password using bcrypt
 	passwordBytes := []byte(password)
@@ -44,22 +44,22 @@ func Register(writer http.ResponseWriter, request *http.Request) {
 
 	responseMessage := map[string]string{"message": "user created successully"}
 	jsonResponse, _ := json.Marshal(responseMessage)
-	
+
 	writer.WriteHeader(http.StatusOK)
 	writer.Write(jsonResponse)
 }
 
 func Login(writer http.ResponseWriter, request *http.Request) {
-    writer.Header().Set("Content-Type", "application/json")
+	writer.Header().Set("Content-Type", "application/json")
 
 	secret := config.JWTSecret
-    expiry := config.TokenExpiry
+	expiry := config.TokenExpiry
 
 	var requestBody struct {
-        Email    string `json:"email"`
-        Password string `json:"password"`
-    }
-	
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+
 	var user models.User
 
 	decoder := json.NewDecoder(request.Body)
@@ -69,19 +69,19 @@ func Login(writer http.ResponseWriter, request *http.Request) {
 	}
 
 	if err := database.DB.Where("email = ?", requestBody.Email).First(&user).Error; err != nil {
-        http.Error(writer, "User not found", http.StatusNotFound)
-        return
-    }
+		http.Error(writer, "User not found", http.StatusNotFound)
+		return
+	}
 
-	storedHashedPassword := user.Password 
+	storedHashedPassword := user.Password
 	plainPassword := requestBody.Password
 
 	// compare the password using bcrypt
 	errPassword := bcrypt.CompareHashAndPassword([]byte(storedHashedPassword), []byte(plainPassword))
-    if errPassword != nil {
-        fmt.Println("Email and Password does not match")
-        return
-    }
+	if errPassword != nil {
+		fmt.Println("Email and Password does not match")
+		return
+	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, utilis.JWTClaims{
 		user.UserID,
@@ -93,21 +93,21 @@ func Login(writer http.ResponseWriter, request *http.Request) {
 
 	// Sign the token with the secret key
 	tokenString, err := token.SignedString(secret)
-		if err != nil {
-			http.Error(writer, "Failed to generate token", http.StatusInternalServerError)
-			return
-		}
+	if err != nil {
+		http.Error(writer, "Failed to generate token", http.StatusInternalServerError)
+		return
+	}
 
 	responseMessage := map[string]string{"access_token": tokenString}
 	jsonResponse, _ := json.Marshal(responseMessage)
-	
+
 	writer.WriteHeader(http.StatusOK)
 	writer.Write(jsonResponse)
 }
 
 func Home(writer http.ResponseWriter, request *http.Request) {
-    writer.Header().Set("Content-Type", "application/json")
-	
+	writer.Header().Set("Content-Type", "application/json")
+
 	writer.WriteHeader(http.StatusOK)
 	response := []byte(`{"message": "hello"}`)
 	writer.Write(response)

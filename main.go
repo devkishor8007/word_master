@@ -2,14 +2,13 @@ package main
 
 import (
 	"fmt"
-    "net/http"
-	"log"
-
-	"github.com/joho/godotenv"
-	"os"
-    "github.com/gorilla/mux"
 	"github.com/devkishor8007/word_master/src/database"
 	"github.com/devkishor8007/word_master/src/routes"
+	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
+	"log"
+	"net/http"
+	"os"
 )
 
 func main() {
@@ -17,7 +16,7 @@ func main() {
 
 	err := godotenv.Load()
 	if err != nil {
-	  log.Fatal("Error loading .env file")
+		log.Fatal("Error loading .env file")
 	}
 
 	port := os.Getenv("PORT")
@@ -27,10 +26,10 @@ func main() {
 	routes.SetupRoutes(router)
 
 	server := &http.Server{
-		Addr:    ":"+ port,
+		Addr:    ":" + port,
 		Handler: router,
 	}
 
-	fmt.Println("Server is running on :"+port)
+	fmt.Println("Server is running on :" + port)
 	log.Fatal(server.ListenAndServe())
 }

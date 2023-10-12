@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"github.com/gorilla/mux"
 	"github.com/devkishor8007/word_master/src/controllers"
 	"github.com/devkishor8007/word_master/src/middleware"
+	"github.com/gorilla/mux"
 	"net/http"
 )
 
