@@ -1,0 +1,3 @@
+# Using gofmt (Built-in Go Formatting Tool):
+Go has a built-in code formatting tool called gofmt where automatically format your code in the command line
+$ gofmt -w .
