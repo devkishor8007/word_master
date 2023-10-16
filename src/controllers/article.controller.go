@@ -7,17 +7,7 @@ import (
 	"github.com/devkishor8007/word_master/src/models"
 	"gorm.io/gorm"
 	"net/http"
-	"time"
 )
-
-type Article struct {
-	ArticleID       uint      `gorm:"primaryKey" json:"article_id"`
-	Title           string    `json:"title"`
-	Content         string    `json:"content"`
-	PublicationDate time.Time `json:"publication_date"`
-	AuthorID        uint      `json:"author_id"`
-	CategoryID      uint      `json:"category_id"`
-}
 
 func GetArticles(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
@@ -52,7 +42,7 @@ func CreateArticle(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	var article Article
+	var article models.Article
 
 	decoder := json.NewDecoder(request.Body)
 	if err := decoder.Decode(&article); err != nil {
