@@ -3,11 +3,10 @@ package controllers
 import (
 	"encoding/json"
 	"github.com/devkishor8007/word_master/src/database"
-	"github.com/devkishor8007/word_master/src/models"
 	"github.com/devkishor8007/word_master/src/middleware"
+	"github.com/devkishor8007/word_master/src/models"
 	"net/http"
 )
-
 
 func GetArticles(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")

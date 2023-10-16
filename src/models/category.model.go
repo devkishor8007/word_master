@@ -6,6 +6,6 @@ import (
 
 type Category struct {
 	gorm.Model
-	Name string `json:"name" gorm:"unique;not null"`
+	Name     string `json:"name" gorm:"unique;not null"`
 	Articles []Article
 }
