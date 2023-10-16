@@ -5,15 +5,28 @@ import (
 	"github.com/devkishor8007/word_master/src/database"
 	"github.com/devkishor8007/word_master/src/middleware"
 	"github.com/devkishor8007/word_master/src/models"
+	"gorm.io/gorm"
 	"net/http"
+	"time"
 )
+
+type Article struct {
+	ArticleID       uint      `gorm:"primaryKey" json:"article_id"`
+	Title           string    `json:"title"`
+	Content         string    `json:"content"`
+	PublicationDate time.Time `json:"publication_date"`
+	AuthorID        uint      `json:"author_id"`
+	CategoryID      uint      `json:"category_id"`
+}
 
 func GetArticles(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 
 	var article []models.Article
 
-	if err := database.DB.Preload("Category").Find(&article).Error; err != nil {
+	if err := database.DB.Preload("User", func(db *gorm.DB) *gorm.DB {
+		return db.Select("user_id", "username", "email")
+	}).Preload("Category").Find(&article).Error; err != nil {
 		http.Error(writer, "Article not found", http.StatusNotFound)
 		return
 	}
@@ -39,7 +52,7 @@ func CreateArticle(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	var article models.Article
+	var article Article
 
 	decoder := json.NewDecoder(request.Body)
 	if err := decoder.Decode(&article); err != nil {

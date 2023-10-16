@@ -13,11 +13,18 @@ import (
 	"time"
 )
 
+type User struct {
+	UserID   uint   `gorm:"primaryKey" json:"user_id"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 func Register(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 
 	// create a new user instance
-	var user models.User
+	var user User
 
 	decoder := json.NewDecoder(request.Body)
 	if err := decoder.Decode(&user); err != nil {
