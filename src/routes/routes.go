@@ -21,4 +21,8 @@ func SetupRoutes(r *mux.Router) {
 	// articles endpoint
 	r.HandleFunc("/article", controllers.GetArticles).Methods("GET")
 	r.Handle("/article", middleware.RequiredAuth(http.HandlerFunc(controllers.CreateArticle))).Methods("POST")
+
+	// comment endpoint
+	r.HandleFunc("/comment", controllers.GetComments).Methods("GET")
+	r.Handle("/comment", middleware.RequiredAuth(http.HandlerFunc(controllers.CreateComment))).Methods("POST")
 }

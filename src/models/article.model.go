@@ -13,4 +13,5 @@ type Article struct {
 	User            User      `json:"user" gorm:"foreignKey:AuthorID"`
 	CategoryID      uint      `json:"category_id"`
 	Category        Category  `json:"category" gorm:"foreignKey:CategoryID"`
+	Comments        []Comment `gorm:"foreignKey:SArticleID" json:"comments"`
 }
