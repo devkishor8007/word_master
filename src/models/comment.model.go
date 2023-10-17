@@ -10,6 +10,6 @@ type Comment struct {
 	CommentDate time.Time `json:"comment_date"`
 	AuthorID    uint      `json:"author_id"`
 	User        User      `json:"user" gorm:"foreignKey:AuthorID"`
-	SArticleID   uint      `json:"article_id"`
+	SArticleID  uint      `json:"article_id"`
 	Article     Article   `json:"article" gorm:"foreignKey:SArticleID"`
 }
