@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"github.com/devkishor8007/word_master/src/database"
 	"github.com/devkishor8007/word_master/src/middleware"
+	"github.com/devkishor8007/word_master/src/models"
 	"net/http"
+	// "fmt"
 )
 
 func ViewProfile(writer http.ResponseWriter, request *http.Request) {
@@ -16,15 +18,9 @@ func ViewProfile(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	type User struct {
-		UserID   uint   `json:"user_id"`
-		Email    string `json:"email"`
-		Username string `json:"username"`
-	}
+	var user models.User
 
-	var user User
-
-	if err := database.DB.Where("user_id = ?", claims.UserID).First(&user).Error; err != nil {
+	if err := database.DB.Where("user_id = ?", claims.UserID).Preload("Articles", "author_id = ?", claims.UserID).Preload("Articles.User").Preload("Articles.Category").First(&user).Error; err != nil {
 		http.Error(writer, "User not found", http.StatusNotFound)
 		return
 	}

@@ -5,5 +5,5 @@ type User struct {
 	Username string    `json:"username"`
 	Email    string    `json:"email"`
 	Password string    `json:"-"`
-	Articles []Article `gorm:"foreignKey:AuthorID" json:"-"`
+	Articles []Article `gorm:"foreignKey:AuthorID" json:"articles"`
 }
