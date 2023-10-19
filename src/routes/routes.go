@@ -7,7 +7,8 @@ import (
 	"net/http"
 )
 
-func SetupRoutes(r *mux.Router) {
+func SetupRoutes(router *mux.Router) {
+	r := router.PathPrefix("/api/v1").Subrouter()
 	r.HandleFunc("/signup", controllers.Register).Methods("POST")
 	r.HandleFunc("/signin", controllers.Login).Methods("POST")
 	r.Handle("/protected", middleware.RequiredAuth(http.HandlerFunc(controllers.Home))).Methods("GET")
