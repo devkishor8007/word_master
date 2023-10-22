@@ -3,7 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"github.com/devkishor8007/word_master/src/database"
-	"github.com/devkishor8007/word_master/src/middleware"
+	"github.com/devkishor8007/word_master/src/helper"
 	"github.com/devkishor8007/word_master/src/models"
 	"gorm.io/gorm"
 	"net/http"
@@ -36,13 +36,11 @@ func GetArticles(writer http.ResponseWriter, request *http.Request) {
 func GetOwnArticles(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 
-	claims, err := middleware.JwtParserClaimss(request)
+	claims, err := helper.JwtParserClaims(request)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusUnauthorized)
 		return
 	}
-
-	//
 
 	var article []models.Article
 
@@ -68,7 +66,7 @@ func GetOwnArticles(writer http.ResponseWriter, request *http.Request) {
 func CreateArticle(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 
-	claims, err := middleware.JwtParserClaimss(request)
+	claims, err := helper.JwtParserClaims(request)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusUnauthorized)
 		return

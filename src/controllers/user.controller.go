@@ -3,16 +3,15 @@ package controllers
 import (
 	"encoding/json"
 	"github.com/devkishor8007/word_master/src/database"
-	"github.com/devkishor8007/word_master/src/middleware"
+	"github.com/devkishor8007/word_master/src/helper"
 	"github.com/devkishor8007/word_master/src/models"
 	"net/http"
-	// "fmt"
 )
 
 func ViewProfile(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 
-	claims, err := middleware.JwtParserClaimss(request)
+	claims, err := helper.JwtParserClaims(request)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusUnauthorized)
 		return

@@ -1,4 +1,4 @@
-package middleware
+package helper
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func JwtParserClaimss(r *http.Request) (*utilis.JWTClaims, error) {
+func JwtParserClaims(r *http.Request) (*utilis.JWTClaims, error) {
 	tokenString := r.Header.Get("Authorization")
 
 	if tokenString == "" {
