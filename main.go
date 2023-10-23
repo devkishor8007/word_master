@@ -25,6 +25,8 @@ func main() {
 
 	routes.SetupRoutes(router)
 
+	router.Use(mux.CORSMethodMiddleware(router))
+
 	server := &http.Server{
 		Addr:    ":" + port,
 		Handler: router,
