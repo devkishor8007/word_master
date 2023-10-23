@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/devkishor8007/word_master/src/database"
-	"github.com/devkishor8007/word_master/src/routes"
 	"github.com/devkishor8007/word_master/src/middleware"
+	"github.com/devkishor8007/word_master/src/routes"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"log"
