@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/devkishor8007/word_master/src/database"
 	"github.com/devkishor8007/word_master/src/routes"
+	"github.com/devkishor8007/word_master/src/middleware"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"log"
@@ -22,6 +23,8 @@ func main() {
 	port := os.Getenv("PORT")
 
 	router := mux.NewRouter()
+
+	router.Use(middleware.RateLimitMiddleware)
 
 	routes.SetupRoutes(router)
 
