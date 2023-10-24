@@ -8,7 +8,16 @@ for handling, publishing and distribution of blog articles.
 ```
 $ git clone https://github.com/devkishor8007/word_master.git
 $ cd word_master
-$ go run main.go 
+# Rename the file [ .env.example ] to [ .env ] and if you're using docker; you don't have to modify any variables
+  otherwise you need to change the variables according to your needs.
+  However, if you're not using Docker, make sure to modify the variables based on your specific requirements.
+
+If you're running the api without docker
+$ go run main.go
+
+If you're running the api with docker
+$ docker-compose up
+ 
 ```
 
 ## get started [fresh_project]
