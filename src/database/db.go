@@ -8,6 +8,7 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"os"
+	"strconv"
 )
 
 var DB *gorm.DB
@@ -24,7 +25,12 @@ func InitDB() {
 	dbUser := os.Getenv("DB_USER")
 	dbPort := os.Getenv("DB_PORT")
 
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable", dbHost, dbUser, dbPassword, dbName, dbPort)
+	port, err_port := strconv.Atoi(dbPort)
+	if err_port != nil {
+		log.Fatal("Invalid port:", err_port)
+	}
+
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable", dbHost, dbUser, dbPassword, dbName, port)
 
 	var err error
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
