@@ -1,3 +1,6 @@
 # Using gofmt (Built-in Go Formatting Tool):
 Go has a built-in code formatting tool called gofmt where automatically format your code in the command line
 $ gofmt -w .
+
+# convert a string to integer
+The strconv.Atoi() function in Go is used to convert a string containing a numeric representation into an integer value.
