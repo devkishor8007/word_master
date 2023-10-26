@@ -7,6 +7,8 @@ import (
 	"github.com/devkishor8007/word_master/src/models"
 	"gorm.io/gorm"
 	"net/http"
+	"strconv"
+	"github.com/gorilla/mux"
 )
 
 func GetArticles(writer http.ResponseWriter, request *http.Request) {
@@ -83,7 +85,49 @@ func CreateArticle(writer http.ResponseWriter, request *http.Request) {
 	article.AuthorID = claims.UserID
 	database.DB.Create(&article)
 
-	responseMessage := map[string]string{"message": "article created successully"}
+	responseMessage := map[string]string{"message": "article created successfully"}
+	jsonResponse, _ := json.Marshal(responseMessage)
+
+	writer.WriteHeader(http.StatusOK)
+	writer.Write(jsonResponse)
+}
+
+func DeleteArticle(writer http.ResponseWriter, request *http.Request) {
+	writer.Header().Set("Content-Type", "application/json")
+
+	vars := mux.Vars(request)
+    articleID := vars["article_id"]
+
+	articleIDInt, errArticleID := strconv.Atoi(articleID)
+
+	if errArticleID != nil {
+        http.Error(writer, "Invalid article_id", http.StatusBadRequest)
+        return
+    }
+
+	claims, err := helper.JwtParserClaims(request)
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	var article models.Article
+
+	result := database.DB.Where("article_id = ? AND author_id = ?", articleIDInt, claims.UserID).First(&article)
+
+	if result.Error != nil {
+		http.Error(writer, "Article not found", http.StatusNotFound)
+		return
+	} else {
+		deleteResult := database.DB.Delete(&article)
+
+		if deleteResult.Error != nil {
+			http.Error(writer, "Error deleting record", http.StatusInternalServerError)
+			return
+		}
+	}
+
+	responseMessage := map[string]string{"message": "article deleted successfully"}
 	jsonResponse, _ := json.Marshal(responseMessage)
 
 	writer.WriteHeader(http.StatusOK)
