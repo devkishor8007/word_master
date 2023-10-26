@@ -48,3 +48,39 @@ func CreateCategory(writer http.ResponseWriter, request *http.Request) {
 	writer.WriteHeader(http.StatusOK)
 	writer.Write(jsonResponse)
 }
+
+func DeleteCategory(writer http.ResponseWriter, request *http.Request) {
+	writer.Header().Set("Content-Type", "application/json")
+
+	vars := mux.Vars(request)
+	categoryID := vars["category_id"]
+
+	categoryIDInt, errCategoryID := strconv.Atoi(categoryID)
+
+	if errCategoryID != nil {
+		http.Error(writer, "Invalid category_id", http.StatusBadRequest)
+		return
+	}
+
+	var category models.Category
+
+	result := database.DB.Where("id = ?", categoryIDInt).First(&category)
+
+	if result.Error != nil {
+		http.Error(writer, "Category not found", http.StatusNotFound)
+		return
+	} else {
+		deleteResult := database.DB.Delete(&category)
+
+		if deleteResult.Error != nil {
+			http.Error(writer, "Error deleting record", http.StatusInternalServerError)
+			return
+		}
+	}
+
+	responseMessage := map[string]string{"message": "Category deleted successfully"}
+	jsonResponse, _ := json.Marshal(responseMessage)
+
+	writer.WriteHeader(http.StatusOK)
+	writer.Write(jsonResponse)
+}

@@ -5,10 +5,10 @@ import (
 	"github.com/devkishor8007/word_master/src/database"
 	"github.com/devkishor8007/word_master/src/helper"
 	"github.com/devkishor8007/word_master/src/models"
+	"github.com/gorilla/mux"
 	"gorm.io/gorm"
 	"net/http"
 	"strconv"
-	"github.com/gorilla/mux"
 )
 
 func GetArticles(writer http.ResponseWriter, request *http.Request) {
@@ -96,14 +96,14 @@ func DeleteArticle(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 
 	vars := mux.Vars(request)
-    articleID := vars["article_id"]
+	articleID := vars["article_id"]
 
 	articleIDInt, errArticleID := strconv.Atoi(articleID)
 
 	if errArticleID != nil {
-        http.Error(writer, "Invalid article_id", http.StatusBadRequest)
-        return
-    }
+		http.Error(writer, "Invalid article_id", http.StatusBadRequest)
+		return
+	}
 
 	claims, err := helper.JwtParserClaims(request)
 	if err != nil {
