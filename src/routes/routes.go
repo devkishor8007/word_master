@@ -18,6 +18,7 @@ func SetupRoutes(router *mux.Router) {
 	// category endpoint
 	r.HandleFunc("/category", controllers.GetCategories).Methods("GET")
 	r.HandleFunc("/category", controllers.CreateCategory).Methods("POST")
+	r.HandleFunc("/category/{category_id:[0-9]}", controllers.DeleteCategory).Methods("DELETE")
 
 	// articles endpoint
 	r.HandleFunc("/articles", controllers.GetArticles).Methods("GET")
