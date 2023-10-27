@@ -10,9 +10,17 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"github.com/mvrilo/go-redoc"
 )
 
 func main() {
+	doc := &redoc.Redoc{
+		Title:       "Example API",
+		Description: "Example API Description",
+		SpecFile:    "./openapi.json",
+		SpecPath:    "/docs/openapi.json",
+	}
+
 	database.InitDB()
 
 	err := godotenv.Load()
@@ -23,6 +31,8 @@ func main() {
 	port := os.Getenv("PORT")
 
 	router := mux.NewRouter()
+
+	router.PathPrefix("/docs").Handler(doc.Handler())
 
 	router.Use(middleware.RateLimitMiddleware)
 
