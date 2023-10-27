@@ -1,0 +1,86 @@
+basePath: /api/v1
+definitions:
+  controllers.BodyLogin:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  controllers.User:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      user_id:
+        type: integer
+      username:
+        type: string
+    type: object
+host: localhost:3002
+info:
+  contact:
+    email: ypankaj007@gmail.com
+    name: API Support
+  description: Auth apis (signup/login) and user apis
+  license:
+    name: Apache 2.0
+  title: Application API
+  version: "1.0"
+paths:
+  /profile:
+    get:
+      consumes:
+      - application/json
+      description: Get user profile info
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Get Profile
+      tags:
+      - users
+  /signin:
+    post:
+      consumes:
+      - application/json
+      description: Login user api with email and password
+      parameters:
+      - description: User Data
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.BodyLogin'
+      produces:
+      - application/json
+      responses: {}
+      summary: Login user
+      tags:
+      - auth
+  /signup:
+    post:
+      consumes:
+      - application/json
+      description: Register user api if not exists
+      parameters:
+      - description: User Data
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.User'
+      produces:
+      - application/json
+      responses: {}
+      summary: Register user
+      tags:
+      - auth
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

@@ -8,6 +8,14 @@ import (
 	"net/http"
 )
 
+// Get godoc
+// @Summary Get Profile
+// @Description Get user profile info
+// @Tags users
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Router /profile [get]
 func ViewProfile(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 

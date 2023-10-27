@@ -10,17 +10,23 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"github.com/mvrilo/go-redoc"
+
+	_ "github.com/devkishor8007/word_master/docs"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
+// @title Application API
+// @version 1.0
+// @description Auth apis (signup/login) and user apis
+// @contact.name API Support
+// @contact.email ypankaj007@gmail.com
+// @license.name Apache 2.0
+// @host localhost:3002
+// @BasePath /api/v1
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
-	doc := &redoc.Redoc{
-		Title:       "Example API",
-		Description: "Example API Description",
-		SpecFile:    "./openapi.json",
-		SpecPath:    "/docs/openapi.json",
-	}
-
 	database.InitDB()
 
 	err := godotenv.Load()
@@ -32,7 +38,9 @@ func main() {
 
 	router := mux.NewRouter()
 
-	router.PathPrefix("/docs").Handler(doc.Handler())
+	router.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
+		httpSwagger.URL("/swagger/doc.json"), // Make sure the URL points to your generated Swagger JSON.
+	))
 
 	router.Use(middleware.RateLimitMiddleware)
 

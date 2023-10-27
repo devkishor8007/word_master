@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"github.com/devkishor8007/word_master/src/database"
 	"github.com/devkishor8007/word_master/src/models"
+	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
-	"github.com/gorilla/mux"
 )
 
 func GetCategories(writer http.ResponseWriter, request *http.Request) {

@@ -20,6 +20,19 @@ type User struct {
 	Password string `json:"password"`
 }
 
+type BodyLogin struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+// Create godoc
+// @Summary Register user
+// @Description Register user api if not exists
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Param   payload     body    User     true        "User Data"
+// @Router /signup [post]
 func Register(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 
@@ -56,6 +69,14 @@ func Register(writer http.ResponseWriter, request *http.Request) {
 	writer.Write(jsonResponse)
 }
 
+// Login godoc
+// @Summary Login user
+// @Description Login user api with email and password
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Param   payload     body    BodyLogin     true        "User Data"
+// @Router /signin [post]
 func Login(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 
