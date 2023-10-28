@@ -20,6 +20,10 @@ $ docker-compose up
  
 ```
 
+## API DOCS - Swagger 
+After running the 'word_master' api, you can get the url: `http://localhost:3002/swagger/index.html` and hit on any browser to view the api docs.
+If you want to change or add any thing on the swagger docs, you can and after modify on the code; do `$ swag init` and re-run the api.
+
 ## get started [fresh_project]
 ```
 $ mkdir word_master && cd word_master
@@ -37,20 +41,4 @@ $ touch main.go
 | | jwt | |
 | | dotenv | |
 | | rate | |
-
-## API ENDPOINTS
-|  base_url | endpoint | http method | payload | add Authorization token in http header [ Authorization  54545454445 ] | describe |
-|----------|----------|----------|----------|--------| --------|
-| localhost:3002/api/v1/ | | GET | | no | view the test endpoint
-| localhost:3002/api/v1/ | signup | POST | { "username": "Peter", "email": "peter@gmail.com", "password": "1234p" } | no | create a new account
-| localhost:3002/api/v1/ | signin | POST | { "email": "peter@gmail.com", "password": "1234p" } | no | login your account
-| localhost:3002/api/v1/ | profile | GET | | yes | get your profile
-| localhost:3002/api/v1/ | category | GET | | no | view all the category
-| localhost:3002/api/v1/ | category | POST | { "name": "golang" } | no | add a new category
-| localhost:3002/api/v1/ | articles | GET | | no | view all the articles
-| localhost:3002/api/v1/ | articles/contributors | GET | | yes | view all the contributors articles  
-| localhost:3002/api/v1/ | articles | POST | { "title": "What is GO?", "content": "Go is a statically typed...", "publication_date": "2023-10-14T10:05:00Z", "category_id": 1 } | yes | create a new article by contributors
-| localhost:3002/api/v1/ | comment | GET | | no | view all the comments
-| localhost:3002/api/v1/ | comment | POST | { "text": "What is NPM?", "comment_date": "2023-10-14T10:05:00Z", "author_id": 1, "article_id": 1 } | yes | add a new comment in a article
-
-
+| | swagger | |
