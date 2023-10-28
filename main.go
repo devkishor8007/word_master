@@ -15,11 +15,10 @@ import (
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
-// @title Application API
+// @title WordMaster API
 // @version 1.0
-// @description Auth apis (signup/login) and user apis
-// @contact.name API Support
-// @contact.email ypankaj007@gmail.com
+// @description content management system for for bloggers and content creators
+// @contact.email test@gmail.com
 // @license.name Apache 2.0
 // @host localhost:3002
 // @BasePath /api/v1
@@ -54,5 +53,8 @@ func main() {
 	}
 
 	fmt.Println("Server is running on :" + port)
+	baseURL := "http://localhost:" + port
+	swaggerURL := baseURL + "/swagger/index.html"
+	fmt.Println("Swagger Documentation URL:", swaggerURL)
 	log.Fatal(server.ListenAndServe())
 }

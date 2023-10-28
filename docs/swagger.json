@@ -1,11 +1,10 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "Auth apis (signup/login) and user apis",
-        "title": "Application API",
+        "description": "content management system for for bloggers and content creators",
+        "title": "WordMaster API",
         "contact": {
-            "name": "API Support",
-            "email": "ypankaj007@gmail.com"
+            "email": "test@gmail.com"
         },
         "license": {
             "name": "Apache 2.0"
