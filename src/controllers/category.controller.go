@@ -4,9 +4,18 @@ import (
 	"encoding/json"
 	"github.com/devkishor8007/word_master/src/database"
 	"github.com/devkishor8007/word_master/src/models"
+	"github.com/gorilla/mux"
 	"net/http"
+	"strconv"
 )
 
+// Get godoc
+// @Summary Get categories
+// @Description Get all categories
+// @Tags category
+// @Accept  json
+// @Produce  json
+// @Router /category [get]
 func GetCategories(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 
@@ -29,6 +38,13 @@ func GetCategories(writer http.ResponseWriter, request *http.Request) {
 	writer.Write(jsonResponse)
 }
 
+// Create godoc
+// @Summary Create category
+// @Description Create all category
+// @Tags category
+// @Accept  json
+// @Produce  json
+// @Router /category [post]
 func CreateCategory(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 
@@ -49,6 +65,14 @@ func CreateCategory(writer http.ResponseWriter, request *http.Request) {
 	writer.Write(jsonResponse)
 }
 
+// Delete godoc
+// @Summary Delete category
+// @Description Delete category
+// @Tags category
+// @Accept  json
+// @Produce  json
+// @Param category_id path int true "Category ID"
+// @Router /category/{category_id} [delete]
 func DeleteCategory(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 

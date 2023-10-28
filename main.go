@@ -10,8 +10,22 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	_ "github.com/devkishor8007/word_master/docs"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
+// @title Application API
+// @version 1.0
+// @description Auth apis (signup/login) and user apis
+// @contact.name API Support
+// @contact.email ypankaj007@gmail.com
+// @license.name Apache 2.0
+// @host localhost:3002
+// @BasePath /api/v1
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
 	database.InitDB()
 
@@ -23,6 +37,10 @@ func main() {
 	port := os.Getenv("PORT")
 
 	router := mux.NewRouter()
+
+	router.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
+		httpSwagger.URL("/swagger/doc.json"), // Make sure the URL points to your generated Swagger JSON.
+	))
 
 	router.Use(middleware.RateLimitMiddleware)
 

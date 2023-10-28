@@ -12,7 +12,7 @@ func SetupRoutes(router *mux.Router) {
 	r.HandleFunc("/signup", controllers.Register).Methods("POST")
 	r.HandleFunc("/signin", controllers.Login).Methods("POST")
 	r.Handle("/protected", middleware.RequiredAuth(http.HandlerFunc(controllers.Home))).Methods("GET")
-	r.Handle("/profile", middleware.RequiredAuth(http.HandlerFunc(controllers.ViewProfile))).Methods("GET")
+	r.Handle("/user/profile", middleware.RequiredAuth(http.HandlerFunc(controllers.ViewProfile))).Methods("GET")
 	r.HandleFunc("/", controllers.Home).Methods("GET")
 
 	// category endpoint

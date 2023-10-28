@@ -1,0 +1,239 @@
+basePath: /api/v1
+definitions:
+  controllers.BodyLogin:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  controllers.User:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      user_id:
+        type: integer
+      username:
+        type: string
+    type: object
+host: localhost:3002
+info:
+  contact:
+    email: ypankaj007@gmail.com
+    name: API Support
+  description: Auth apis (signup/login) and user apis
+  license:
+    name: Apache 2.0
+  title: Application API
+  version: "1.0"
+paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses: {}
+      summary: response hello world
+  /articles:
+    get:
+      consumes:
+      - application/json
+      description: Get all public articles
+      produces:
+      - application/json
+      responses: {}
+      summary: Get all public articles
+      tags:
+      - article
+    post:
+      consumes:
+      - application/json
+      description: Create all article
+      parameters:
+      - description: Token value
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Create article
+      tags:
+      - article
+  /articles/{article_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete article
+      parameters:
+      - description: Token value
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: article ID
+        in: path
+        name: article_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Delete article
+      tags:
+      - article
+  /articles/contributors:
+    get:
+      consumes:
+      - application/json
+      description: Get all own articles
+      parameters:
+      - description: Token value
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Get articles of contributors
+      tags:
+      - article
+  /category:
+    get:
+      consumes:
+      - application/json
+      description: Get all categories
+      produces:
+      - application/json
+      responses: {}
+      summary: Get categories
+      tags:
+      - category
+    post:
+      consumes:
+      - application/json
+      description: Create all category
+      produces:
+      - application/json
+      responses: {}
+      summary: Create category
+      tags:
+      - category
+  /category/{category_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete category
+      parameters:
+      - description: Category ID
+        in: path
+        name: category_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete category
+      tags:
+      - category
+  /comment:
+    get:
+      consumes:
+      - application/json
+      description: Get comment in articles
+      produces:
+      - application/json
+      responses: {}
+      summary: Get comment
+      tags:
+      - comment
+    post:
+      consumes:
+      - application/json
+      description: Create comment in articles
+      parameters:
+      - description: Token value
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Create comment
+      tags:
+      - comment
+  /signin:
+    post:
+      consumes:
+      - application/json
+      description: Login user api with email and password
+      parameters:
+      - description: User Data
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.BodyLogin'
+      produces:
+      - application/json
+      responses: {}
+      summary: Login user
+      tags:
+      - auth
+  /signup:
+    post:
+      consumes:
+      - application/json
+      description: Register user api if not exists
+      parameters:
+      - description: User Data
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.User'
+      produces:
+      - application/json
+      responses: {}
+      summary: Register user
+      tags:
+      - auth
+  /user/profile:
+    get:
+      consumes:
+      - application/json
+      description: Get user profile info
+      parameters:
+      - description: Token value
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Get Profile
+      tags:
+      - users
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

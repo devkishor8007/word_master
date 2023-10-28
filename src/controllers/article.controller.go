@@ -11,6 +11,13 @@ import (
 	"strconv"
 )
 
+// Get godoc
+// @Summary Get all public articles
+// @Description Get all public articles
+// @Tags article
+// @Accept  json
+// @Produce  json
+// @Router /articles [get]
 func GetArticles(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 
@@ -35,6 +42,15 @@ func GetArticles(writer http.ResponseWriter, request *http.Request) {
 	writer.Write(jsonResponse)
 }
 
+// GetOwn godoc
+// @Summary Get articles of contributors
+// @Description Get all own articles
+// @Tags article
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param Authorization header string true "Token value"
+// @Router /articles/contributors [get]
 func GetOwnArticles(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 
@@ -65,6 +81,15 @@ func GetOwnArticles(writer http.ResponseWriter, request *http.Request) {
 	writer.Write(jsonResponse)
 }
 
+// Create godoc
+// @Summary Create article
+// @Description Create all article
+// @Tags article
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param Authorization header string true "Token value"
+// @Router /articles [post]
 func CreateArticle(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 
@@ -92,6 +117,16 @@ func CreateArticle(writer http.ResponseWriter, request *http.Request) {
 	writer.Write(jsonResponse)
 }
 
+// Delete godoc
+// @Summary Delete article
+// @Description Delete article
+// @Tags article
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param Authorization header string true "Token value"
+// @Param article_id path int true "article ID"
+// @Router /articles/{article_id} [delete]
 func DeleteArticle(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 
