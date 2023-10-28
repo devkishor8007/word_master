@@ -133,10 +133,15 @@ func Login(writer http.ResponseWriter, request *http.Request) {
 	writer.Write(jsonResponse)
 }
 
+// Hello godoc
+// @Summary response hello world
+// @Accept  json
+// @Produce  json
+// @Router / [get]
 func Home(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 
 	writer.WriteHeader(http.StatusOK)
-	response := []byte(`{"message": "hello"}`)
+	response := []byte(`{"message": "hello world"}`)
 	writer.Write(response)
 }

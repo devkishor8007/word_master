@@ -7,6 +7,13 @@ import (
 	"net/http"
 )
 
+// Get godoc
+// @Summary Get comment
+// @Description Get comment in articles
+// @Tags comment
+// @Accept  json
+// @Produce  json
+// @Router /comment [get]
 func GetComments(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 
@@ -29,6 +36,15 @@ func GetComments(writer http.ResponseWriter, request *http.Request) {
 	writer.Write(jsonResponse)
 }
 
+// Create godoc
+// @Summary Create comment
+// @Description Create comment in articles
+// @Tags comment
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param Authorization header string true "Token value"
+// @Router /comment [post]
 func CreateComment(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 

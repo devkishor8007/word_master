@@ -15,7 +15,8 @@ import (
 // @Accept  json
 // @Produce  json
 // @Security ApiKeyAuth
-// @Router /profile [get]
+// @Param Authorization header string true "Token value"
+// @Router /user/profile [get]
 func ViewProfile(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 
