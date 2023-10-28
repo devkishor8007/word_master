@@ -21,12 +21,11 @@ definitions:
 host: localhost:3002
 info:
   contact:
-    email: ypankaj007@gmail.com
-    name: API Support
-  description: Auth apis (signup/login) and user apis
+    email: test@gmail.com
+  description: content management system for for bloggers and content creators
   license:
     name: Apache 2.0
-  title: Application API
+  title: WordMaster API
   version: "1.0"
 paths:
   /:
