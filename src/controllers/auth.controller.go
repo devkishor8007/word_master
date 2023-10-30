@@ -38,6 +38,7 @@ func Register(writer http.ResponseWriter, request *http.Request) {
 
 	// create a new user instance
 	var user User
+	var existingUser models.User
 
 	decoder := json.NewDecoder(request.Body)
 	if err := decoder.Decode(&user); err != nil {
@@ -45,6 +46,12 @@ func Register(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
+	result := database.DB.Where("email = ?", user.Email).First(&existingUser)
+	if result.Error == nil {
+		http.Error(writer, "Email already exists", http.StatusConflict)
+		return
+	}
+	
 	// extract the password from the user struct
 	password := user.Password
 
